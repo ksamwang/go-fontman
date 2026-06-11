@@ -64,34 +64,6 @@ Info "Copying runtime assets"
 Copy-Directory "runtime" (Join-Path $outputPath "runtime")
 
 Info "Writing release README"
-@"
-# go-fontman release
-
-Run service:
-
-```powershell
-.\fontman-service.exe
-```
-
-Run service on a custom port:
-
-```powershell
-.\fontman-service.exe -port 19092
-```
-
-Open test page:
-
-```text
-http://127.0.0.1:9092
-```
-
-CLI example:
-
-```powershell
-.\fontman-cli.exe -image D:\path\to\image.png -box 0,0,90,43 -top-k 5
-```
-
-The `runtime` directory must stay next to the exe files.
-"@ | Set-Content -LiteralPath (Join-Path $outputPath "README.md") -Encoding UTF8
+Copy-Item -LiteralPath "scripts\release_README.md" -Destination (Join-Path $outputPath "README.md") -Force
 
 Info "Release ready: $outputPath"
