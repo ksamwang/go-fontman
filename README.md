@@ -27,10 +27,11 @@ python tools\export_runtime.py
 
 Outputs:
 
-- `artifacts/font_ai/runtime/model/font_embedding.onnx`
-- `artifacts/font_ai/runtime/model/font_embedding.onnx.data`
-- `artifacts/font_ai/runtime/manifest.json`
-- `artifacts/font_ai/runtime/data/font_index.f32bin`
+- `runtime/font_ai/model/font_embedding.onnx`
+- `runtime/font_ai/model/font_embedding.onnx.data`
+- `runtime/font_ai/manifest.json`
+- `runtime/font_ai/data/font_index.f32bin`
+- `runtime/font_ai/data/font_index_meta.json`
 
 The export script is a conversion tool only. The final Go runtime should not
 depend on Python, PyTorch, or NumPy.
@@ -50,7 +51,7 @@ runs ONNX inference, and returns Top-K font candidates.
 
 ```powershell
 go run ./cmd/fontman-cli `
-  -manifest artifacts\font_ai\runtime\manifest.json `
+  -manifest runtime\font_ai\manifest.json `
   -image D:\path\to\sample.png `
   -box 100,80,420,120 `
   -top-k 5

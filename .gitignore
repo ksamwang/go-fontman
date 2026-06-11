@@ -6,6 +6,8 @@
 *.exe~
 *.dll
 !runtime/
+!runtime/font_ai/
+!runtime/font_ai/**
 !runtime/onnxruntime/
 !runtime/onnxruntime/win-x64/
 !runtime/onnxruntime/win-x64/onnxruntime.dll

@@ -19,7 +19,7 @@ func main() {
 	var imagePath string
 	var boxText string
 	var topK int
-	flag.StringVar(&manifestPath, "manifest", "artifacts/font_ai/runtime/manifest.json", "runtime manifest path")
+	flag.StringVar(&manifestPath, "manifest", "runtime/font_ai/manifest.json", "runtime manifest path")
 	flag.StringVar(&dllPath, "onnxruntime-dll", defaultONNXRuntimeDLL(), "onnxruntime.dll path")
 	flag.StringVar(&imagePath, "image", "", "input image path")
 	flag.StringVar(&boxText, "box", "", "crop box as x,y,w,h")

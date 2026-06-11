@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import shutil
 import struct
 from pathlib import Path
 
@@ -91,9 +92,10 @@ class FontEmbeddingModel(nn.Module):
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Export go-fontman runtime artifacts from trained font_ai data.")
     parser.add_argument("--ai-dir", default="artifacts/font_ai/source", help="Directory containing font_embedding.pt, font_index.npz and font_index_meta.json.")
-    parser.add_argument("--model-out", default="artifacts/font_ai/runtime/model/font_embedding.onnx", help="Output ONNX model path.")
-    parser.add_argument("--index-out", default="artifacts/font_ai/runtime/data/font_index.f32bin", help="Output float32 vector index path.")
-    parser.add_argument("--manifest-out", default="artifacts/font_ai/runtime/manifest.json", help="Output runtime manifest path.")
+    parser.add_argument("--model-out", default="runtime/font_ai/model/font_embedding.onnx", help="Output ONNX model path.")
+    parser.add_argument("--index-out", default="runtime/font_ai/data/font_index.f32bin", help="Output float32 vector index path.")
+    parser.add_argument("--metadata-out", default="runtime/font_ai/data/font_index_meta.json", help="Output runtime metadata path.")
+    parser.add_argument("--manifest-out", default="runtime/font_ai/manifest.json", help="Output runtime manifest path.")
     parser.add_argument("--opset", type=int, default=18, help="ONNX opset version.")
     return parser.parse_args()
 
@@ -132,6 +134,10 @@ def main() -> None:
     index_out.parent.mkdir(parents=True, exist_ok=True)
     write_f32_index(index_out, embeddings)
 
+    metadata_out = Path(args.metadata_out)
+    metadata_out.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(meta_path, metadata_out)
+
     manifest = {
         "runtimeVersion": RUNTIME_VERSION,
         "source": {
@@ -169,7 +175,7 @@ def main() -> None:
             "vectorsNormalized": True,
         },
         "metadata": {
-            "path": str(meta_path.as_posix()),
+            "path": str(metadata_out.as_posix()),
         },
     }
     manifest_out = Path(args.manifest_out)
@@ -178,6 +184,7 @@ def main() -> None:
 
     print(f"exported ONNX model: {model_out}")
     print(f"exported vector index: {index_out} ({embeddings.shape[0]} x {embeddings.shape[1]})")
+    print(f"exported metadata: {metadata_out}")
     print(f"exported manifest: {manifest_out}")
 
 
