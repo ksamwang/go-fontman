@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -19,7 +20,7 @@ func main() {
 	var boxText string
 	var topK int
 	flag.StringVar(&manifestPath, "manifest", "artifacts/font_ai/runtime/manifest.json", "runtime manifest path")
-	flag.StringVar(&dllPath, "onnxruntime-dll", os.Getenv("ONNXRUNTIME_DLL"), "onnxruntime.dll path")
+	flag.StringVar(&dllPath, "onnxruntime-dll", defaultONNXRuntimeDLL(), "onnxruntime.dll path")
 	flag.StringVar(&imagePath, "image", "", "input image path")
 	flag.StringVar(&boxText, "box", "", "crop box as x,y,w,h")
 	flag.IntVar(&topK, "top-k", 5, "number of font candidates")
@@ -68,4 +69,18 @@ func parseBox(value string) (imageprep.Box, error) {
 func fail(message string) {
 	fmt.Fprintln(os.Stderr, message)
 	os.Exit(1)
+}
+
+func defaultONNXRuntimeDLL() string {
+	if value := strings.TrimSpace(os.Getenv("ONNXRUNTIME_DLL")); value != "" {
+		return value
+	}
+	path := filepath.Join("runtime", "onnxruntime", "win-x64", "onnxruntime.dll")
+	if _, err := os.Stat(path); err == nil {
+		if abs, err := filepath.Abs(path); err == nil {
+			return abs
+		}
+		return path
+	}
+	return ""
 }

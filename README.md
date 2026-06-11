@@ -51,13 +51,18 @@ runs ONNX inference, and returns Top-K font candidates.
 ```powershell
 go run ./cmd/fontman-cli `
   -manifest artifacts\font_ai\runtime\manifest.json `
-  -onnxruntime-dll D:\path\to\onnxruntime.dll `
   -image D:\path\to\sample.png `
   -box 100,80,420,120 `
   -top-k 5
 ```
 
-`-onnxruntime-dll` can also be provided through `ONNXRUNTIME_DLL`.
+By default the CLI loads:
+
+```text
+runtime/onnxruntime/win-x64/onnxruntime.dll
+```
+
+Use `-onnxruntime-dll` or `ONNXRUNTIME_DLL` to override it.
 
 The current Go binding is pinned to `github.com/yalue/onnxruntime_go v1.23.0`,
 which matches ONNX Runtime 1.23.x. If the DLL version changes, update the Go

@@ -5,6 +5,11 @@
 *.exe
 *.exe~
 *.dll
+!runtime/
+!runtime/onnxruntime/
+!runtime/onnxruntime/win-x64/
+!runtime/onnxruntime/win-x64/onnxruntime.dll
+!runtime/onnxruntime/win-x64/onnxruntime_providers_shared.dll
 *.so
 *.dylib
 
