@@ -42,3 +42,23 @@ depend on Python, PyTorch, or NumPy.
   normalize with `((pixel / 255.0) - 0.5) / 0.5`
 - Output: `embedding`, float32, 512 dimensions, L2 normalized
 - Match metric: dot product against normalized index vectors
+
+## CLI Probe
+
+The first Go-side probe is `cmd/fontman-cli`. It loads the exported runtime,
+runs ONNX inference, and returns Top-K font candidates.
+
+```powershell
+go run ./cmd/fontman-cli `
+  -manifest artifacts\font_ai\runtime\manifest.json `
+  -onnxruntime-dll D:\path\to\onnxruntime.dll `
+  -image D:\path\to\sample.png `
+  -box 100,80,420,120 `
+  -top-k 5
+```
+
+`-onnxruntime-dll` can also be provided through `ONNXRUNTIME_DLL`.
+
+The current Go binding is pinned to `github.com/yalue/onnxruntime_go v1.23.0`,
+which matches ONNX Runtime 1.23.x. If the DLL version changes, update the Go
+binding version in lockstep.
