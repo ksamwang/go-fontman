@@ -26,6 +26,10 @@ go.work.sum
 
 # env file
 .env
+.venv-export/
+
+# Trained/exported runtime artifacts
+artifacts/font_ai/
 
 # Editor/IDE
 # .idea/
