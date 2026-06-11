@@ -10,11 +10,17 @@ type Store struct {
 }
 
 type Font struct {
-	Name          string `json:"name"`
-	Path          string `json:"path"`
-	FilePath      string `json:"file_path"`
-	FontFaceIndex *int   `json:"font_face_index"`
-	FontFaceName  string `json:"font_face_name"`
+	Name        string `json:"name"`
+	Path        string `json:"path"`
+	FilePath    string `json:"file_path"`
+	FaceIndex   int    `json:"face_index"`
+	ScriptScope string `json:"script_scope"`
+	StyleGroup  string `json:"style_group"`
+	FamilyName  string `json:"family_name"`
+	WeightName  string `json:"weight_name"`
+	IsItalic    bool   `json:"is_italic"`
+	IsTTC       bool   `json:"is_ttc"`
+	Category    string `json:"category"`
 }
 
 func Load(path string) (*Store, error) {

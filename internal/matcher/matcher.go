@@ -18,14 +18,28 @@ type Matcher struct {
 }
 
 type Match struct {
-	Rank          int     `json:"rank"`
-	Index         int     `json:"index"`
-	Score         float32 `json:"score"`
-	FontName      string  `json:"fontName"`
-	FontPath      string  `json:"fontPath"`
-	FilePath      string  `json:"filePath,omitempty"`
-	FontFaceIndex *int    `json:"fontFaceIndex,omitempty"`
-	FontFaceName  string  `json:"fontFaceName,omitempty"`
+	Rank  int     `json:"rank"`
+	Index int     `json:"index"`
+	Score float32 `json:"score"`
+	Font  FontRef `json:"font"`
+}
+
+type FontRef struct {
+	Name     string `json:"name"`
+	Path     string `json:"path"`
+	FilePath string `json:"filePath,omitempty"`
+
+	FaceIndex int    `json:"faceIndex"`
+	FaceName  string `json:"faceName"`
+
+	FamilyName  string `json:"familyName"`
+	WeightName  string `json:"weightName"`
+	StyleGroup  string `json:"styleGroup"`
+	ScriptScope string `json:"scriptScope"`
+	Category    string `json:"category"`
+
+	IsItalic bool `json:"isItalic"`
+	IsTTC    bool `json:"isTTC"`
 }
 
 func New(manifestPath, dllPath string) (*Matcher, error) {
@@ -74,14 +88,23 @@ func (m *Matcher) MatchImage(imagePath string, box imageprep.Box, topK int) ([]M
 	for rank, result := range results {
 		font := m.metadata.FontAt(result.Index)
 		matches = append(matches, Match{
-			Rank:          rank + 1,
-			Index:         result.Index,
-			Score:         result.Score,
-			FontName:      font.Name,
-			FontPath:      font.Path,
-			FilePath:      font.FilePath,
-			FontFaceIndex: font.FontFaceIndex,
-			FontFaceName:  font.FontFaceName,
+			Rank:  rank + 1,
+			Index: result.Index,
+			Score: result.Score,
+			Font: FontRef{
+				Name:        font.Name,
+				Path:        font.Path,
+				FilePath:    font.FilePath,
+				FaceIndex:   font.FaceIndex,
+				FaceName:    font.Name,
+				FamilyName:  font.FamilyName,
+				WeightName:  font.WeightName,
+				StyleGroup:  font.StyleGroup,
+				ScriptScope: font.ScriptScope,
+				Category:    font.Category,
+				IsItalic:    font.IsItalic,
+				IsTTC:       font.IsTTC,
+			},
 		})
 	}
 	return matches, nil
