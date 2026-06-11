@@ -21,12 +21,17 @@ import (
 
 func main() {
 	var addr string
+	var port int
 	var manifestPath string
 	var dllPath string
-	flag.StringVar(&addr, "addr", "127.0.0.1:9092", "listen address")
+	flag.StringVar(&addr, "addr", "", "listen address, overrides -port when set")
+	flag.IntVar(&port, "port", 9092, "listen port on 127.0.0.1")
 	flag.StringVar(&manifestPath, "manifest", "runtime/font_ai/manifest.json", "runtime manifest path")
 	flag.StringVar(&dllPath, "onnxruntime-dll", defaultONNXRuntimeDLL(), "onnxruntime.dll path")
 	flag.Parse()
+	if strings.TrimSpace(addr) == "" {
+		addr = fmt.Sprintf("127.0.0.1:%d", port)
+	}
 
 	m, err := matcher.New(manifestPath, dllPath)
 	if err != nil {

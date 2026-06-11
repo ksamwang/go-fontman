@@ -204,7 +204,13 @@ go run ./cmd/fontman-service
 127.0.0.1:9092
 ```
 
-也可以指定地址：
+主程序可以指定启动端口：
+
+```powershell
+go run ./cmd/fontman-service -port 19092
+```
+
+也可以指定完整监听地址，`-addr` 会覆盖 `-port`：
 
 ```powershell
 go run ./cmd/fontman-service -addr 127.0.0.1:9092

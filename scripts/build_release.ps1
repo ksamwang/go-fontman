@@ -73,6 +73,12 @@ Run service:
 .\fontman-service.exe
 ```
 
+Run service on a custom port:
+
+```powershell
+.\fontman-service.exe -port 19092
+```
+
 Open test page:
 
 ```text
