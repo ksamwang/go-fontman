@@ -68,3 +68,38 @@ Use `-onnxruntime-dll` or `ONNXRUNTIME_DLL` to override it.
 The current Go binding is pinned to `github.com/yalue/onnxruntime_go v1.23.0`,
 which matches ONNX Runtime 1.23.x. If the DLL version changes, update the Go
 binding version in lockstep.
+
+## Local Service
+
+Run the service:
+
+```powershell
+go run ./cmd/fontman-service
+```
+
+Open the embedded test page:
+
+```text
+http://127.0.0.1:9092
+```
+
+Health check:
+
+```powershell
+Invoke-RestMethod http://127.0.0.1:9092/health
+```
+
+Programmatic match API:
+
+```http
+POST /match
+Content-Type: application/json
+```
+
+```json
+{
+  "imagePath": "D:\\path\\to\\image.png",
+  "box": {"x": 0, "y": 0, "w": 90, "h": 43},
+  "topK": 5
+}
+```
